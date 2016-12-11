@@ -1,0 +1,30 @@
+---
+- name: Install with plugins
+  apt: pkg={{ item }} state=installed
+  with_items:
+        - remmina
+        - libfreerdp-plugins-standard
+        - remmina-plugin-vnc
+        - remmina-plugin-rdp
+        - remmina-plugin-gnome
+  become: yes
+  register: installed
+
+- block:
+
+  - name: Remove default dir
+    file: path={{ remmina_config_dir }} state=absent
+
+  - name: Restore Backup Dir
+    copy: src={{ remmina_backup_dir }}
+          dest={{ remmina_config_dir }}
+    when: not remmina_use_backup_symlink
+
+  - name: Symlink Backup Dir
+    file: dest={{ remmina_config_dir }} src={{ remmina_backup_dir }} state=link
+    when: remmina_use_backup_symlink
+
+  when:
+    - installed.changed
+    - remmina_use_backup
+    - remmina_backup_dir is defined
