@@ -2,4 +2,3 @@
 - name: Install Remmina (Debian)
   include: "debian.yml"
   when: ansible_os_family in [ "Debian", "Linuxmint" ]
-

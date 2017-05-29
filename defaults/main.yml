@@ -1,6 +1,6 @@
 ---
-os_username: "{{ lookup('env','USER') }}"
 remmina_use_backup: true
 remmina_use_backup_symlink: true
+
 remmina_config_dir: "/home/{{ os_username }}/.remmina"
 remmina_backup_dir: "{{ backup_dir_root }}/configs/remmina"
